@@ -27,6 +27,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.huxq17.pump:download:1.0.5'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
-    implementation project(':library')
+//    implementation project(':library')
+    implementation'com.huxq17.easyupgrade:easyupgrade:1.0.0'
 
 }

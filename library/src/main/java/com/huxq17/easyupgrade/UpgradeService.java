@@ -32,17 +32,29 @@ public class UpgradeService extends Service {
         public void onSuccess() {
             super.onSuccess();
             DownloadInfo downloadInfo = getDownloadInfo();
-            String url = downloadInfo.getUrl();
-            if (apkUrls.contains(url)) {
-                apkUrls.remove(url);
-                APK.with(UpgradeService.this).from(downloadInfo.getFilePath())
-                        .install();
-            }
-            if (apkUrls.size() == 0) {
-                stopSelf();
-            }
+            stopIfNeed(downloadInfo);
+        }
+
+        @Override
+        public void onFailed() {
+            super.onFailed();
+            DownloadInfo downloadInfo = getDownloadInfo();
+            stopIfNeed(downloadInfo);
         }
     };
+
+    private void stopIfNeed(DownloadInfo downloadInfo) {
+        String url = downloadInfo.getUrl();
+        if (apkUrls.contains(url)) {
+            apkUrls.remove(url);
+            if (downloadInfo.getProgress() == 100)
+                APK.with(UpgradeService.this).from(downloadInfo.getFilePath())
+                        .install();
+        }
+        if (apkUrls.size() == 0) {
+            stopSelf();
+        }
+    }
 
     @Override
     public void onCreate() {
