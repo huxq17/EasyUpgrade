@@ -36,7 +36,7 @@ dependencies {
  EasyUpgrade.with(this).from(apkUrl).upgrade();
 ```
 ### 更多
-如果想在下载apk的时候给用户显示进度条，可以参考[demo](https://note.youdao.com/)
+如果想在下载apk的时候给用户显示进度条，可以参考[demo](https://github.com/huxq17/EasyUpgrade/blob/master/app/src/main/java/com/huxq17/easyupgrade/demo/MainActivity.java)
 
 ### 效果图
 
