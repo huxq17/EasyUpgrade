@@ -36,7 +36,7 @@ dependencies {
  EasyUpgrade.with(this).from(apkUrl).upgrade();
 ```
 ### FileProvider
-在7.0以后如果想共享文件给其他应用需要用到fileprovider，关于fileprovider和配置都处理好了，开发的时候不需要再关心fileprovider相关的东西，只需要拿到authority获取到Uri就行了，其中authority为：
+应用如果有其他使用fileprovider的需求，例如拍照，相册选取图片等，这个时候不需要再关心fileprovider相关的东西，关于fileprovider和配置都处理好了，只需要拿到authority获取到Uri就行了，其中authority为：
 
 ```
  String authority = context.getPackageName() + ".fileProvider-installApk";
@@ -52,8 +52,6 @@ if (Build.VERSION.SDK_INT >= 24) {
 }
 ```
 大功告成，获取到Uri以后想干嘛就干嘛了。
-
-
 
 ### 更多
 如果想在下载apk的时候给用户显示进度条，可以参考[demo](https://github.com/huxq17/EasyUpgrade/blob/master/app/src/main/java/com/huxq17/easyupgrade/demo/MainActivity.java)
