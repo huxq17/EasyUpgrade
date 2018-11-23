@@ -24,8 +24,8 @@ App模块的build.gradle：
 apply plugin: 'service_agency'
 
 dependencies {
-    implementation'com.huxq17.easyupgrade:easyupgrade:1.0.0'
-    implementation'com.huxq17.pump:download:1.0.6'
+    implementation'com.huxq17.easyupgrade:easyupgrade:1.0.1'
+    implementation'com.huxq17.pump:download:1.0.7'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
 }
 
@@ -35,6 +35,26 @@ dependencies {
 ```
  EasyUpgrade.with(this).from(apkUrl).upgrade();
 ```
+### FileProvider
+在7.0以后如果想共享文件给其他应用需要用到fileprovider，关于fileprovider和配置都处理好了，开发的时候不需要再关心fileprovider相关的东西，只需要拿到authority获取到Uri就行了，其中authority为：
+
+```
+ String authority = context.getPackageName() + ".fileProvider-installApk";
+```
+文件Uri为：
+
+```
+Uri fileUri = null;
+if (Build.VERSION.SDK_INT >= 24) {
+    fileUri = FileProvider.getUriForFile(this, authority, file);
+} else {
+    fileUri = Uri.fromFile(file);
+}
+```
+大功告成，获取到Uri以后想干嘛就干嘛了。
+
+
+
 ### 更多
 如果想在下载apk的时候给用户显示进度条，可以参考[demo](https://github.com/huxq17/EasyUpgrade/blob/master/app/src/main/java/com/huxq17/easyupgrade/demo/MainActivity.java)
 
