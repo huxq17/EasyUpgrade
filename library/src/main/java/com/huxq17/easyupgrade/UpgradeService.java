@@ -8,13 +8,12 @@ import android.support.annotation.Nullable;
 
 import com.huxq17.download.DownloadInfo;
 import com.huxq17.download.Pump;
-import com.huxq17.download.listener.DownloadObserver;
+import com.huxq17.download.message.DownloadObserver;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 public class UpgradeService extends Service {
-    private List<String> apkUrls = new ArrayList<>();
+    private HashSet<String> apkUrls = new HashSet<>();
 
     @Nullable
     @Override
@@ -23,6 +22,11 @@ public class UpgradeService extends Service {
     }
 
     private DownloadObserver downloadObserver = new DownloadObserver() {
+        @Override
+        public boolean filter(DownloadInfo downloadInfo) {
+            return apkUrls.contains(downloadInfo.getUrl());
+        }
+
         @Override
         public void onProgress(int progress) {
 
@@ -45,12 +49,10 @@ public class UpgradeService extends Service {
 
     private void stopIfNeed(DownloadInfo downloadInfo) {
         String url = downloadInfo.getUrl();
-        if (apkUrls.contains(url)) {
-            apkUrls.remove(url);
-            if (downloadInfo.getProgress() == 100)
-                APK.with(UpgradeService.this).from(downloadInfo.getFilePath())
-                        .install();
-        }
+        apkUrls.remove(url);
+        if (downloadInfo.getProgress() == 100)
+            APK.with(UpgradeService.this).from(downloadInfo.getFilePath())
+                    .install();
         if (apkUrls.size() == 0) {
             stopSelf();
         }
@@ -59,16 +61,14 @@ public class UpgradeService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Pump.subscribe(downloadObserver);
+        downloadObserver.enable();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String url = intent.getStringExtra("apkUrl");
         String filePath = intent.getStringExtra("apkPath");
-        if (!apkUrls.contains(url)) {
-            apkUrls.add(url);
-        }
+        apkUrls.add(url);
         Pump.newRequest(url, filePath).submit();
         return super.onStartCommand(intent, flags, startId);
     }
@@ -77,7 +77,7 @@ public class UpgradeService extends Service {
     public void onDestroy() {
         super.onDestroy();
         apkUrls.clear();
-        Pump.unSubscribe(downloadObserver);
+        downloadObserver.disable();
     }
 
     public static void start(Context context, String apkUrl, String apkPath) {

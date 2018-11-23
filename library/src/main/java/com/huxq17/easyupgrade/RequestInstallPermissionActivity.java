@@ -136,7 +136,7 @@ public class RequestInstallPermissionActivity extends AppCompatActivity {
         intent.putExtra("path", apkPath);
         intent.putExtra("uri", apkUri);
         intent.putExtra("forceInstall", forceInstall);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
     }
 }

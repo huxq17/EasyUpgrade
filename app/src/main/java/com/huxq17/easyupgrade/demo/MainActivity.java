@@ -6,8 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.huxq17.download.DownloadInfo;
-import com.huxq17.download.Pump;
-import com.huxq17.download.listener.DownloadObserver;
+import com.huxq17.download.message.DownloadObserver;
 import com.huxq17.easyupgrade.EasyUpgrade;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Pump.subscribe(observer);
+        observer.enable();
         initProgressDialog();
     }
 
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Pump.unSubscribe(observer);
+        observer.disable();
         if (progressDialog != null) progressDialog.dismiss();
     }
 }
