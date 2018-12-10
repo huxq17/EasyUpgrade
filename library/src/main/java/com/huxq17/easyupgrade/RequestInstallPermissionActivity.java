@@ -88,6 +88,7 @@ public class RequestInstallPermissionActivity extends AppCompatActivity {
             u = FileProvider.getUriForFile(this, authority, file);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setDataAndType(u, "application/vnd.android.package-archive");
         startActivityForResult(intent, INSTALL_APP_REQUEST_CODE);
 //        finish();
