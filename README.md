@@ -24,8 +24,9 @@ App模块的build.gradle：
 apply plugin: 'service_agency'
 
 dependencies {
+<<<<<<< HEAD
     implementation'com.huxq17.easyupgrade:easyupgrade:1.0.2'
-    implementation'com.huxq17.pump:download:1.0.6'
+    implementation'com.huxq17.pump:download:1.0.8'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
 }
 
@@ -35,6 +36,24 @@ dependencies {
 ```
  EasyUpgrade.with(this).from(apkUrl).upgrade();
 ```
+### FileProvider
+应用如果有其他使用fileprovider的需求，例如拍照，相册选取图片等，这个时候不需要再关心fileprovider相关的东西，关于fileprovider和配置都处理好了，只需要拿到authority获取到Uri就行了，其中authority为：
+
+```
+ String authority = context.getPackageName() + ".fileProvider-installApk";
+```
+文件Uri为：
+
+```
+Uri fileUri = null;
+if (Build.VERSION.SDK_INT >= 24) {
+    fileUri = FileProvider.getUriForFile(this, authority, file);
+} else {
+    fileUri = Uri.fromFile(file);
+}
+```
+大功告成，获取到Uri以后想干嘛就干嘛了。
+
 ### 更多
 如果想在下载apk的时候给用户显示进度条，可以参考[demo](https://github.com/huxq17/EasyUpgrade/blob/master/app/src/main/java/com/huxq17/easyupgrade/demo/MainActivity.java)
 
