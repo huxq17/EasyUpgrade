@@ -50,9 +50,8 @@ public class RequestInstallPermissionActivity extends AppCompatActivity {
     }
 
     public void checkInstallPermission(Activity activity) {
-        if (Build.VERSION.SDK_INT >= 26) {
-            boolean b = activity.getPackageManager().canRequestPackageInstalls();
-            if (b) {
+        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            if (activity.getPackageManager().canRequestPackageInstalls()) {
                 installApk();
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES}, INSTALL_PACKAGES_REQUEST_CODE);
@@ -97,17 +96,19 @@ public class RequestInstallPermissionActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case INSTALL_PACKAGES_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    installApk();
-                } else {
-                    Uri packageURI = Uri.parse("package:" + getPackageName());
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
-                    startActivityForResult(intent, GET_UNKNOWN_APP_SOURCES);
-                }
-                break;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            switch (requestCode) {
+                case INSTALL_PACKAGES_REQUEST_CODE:
+                    if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        installApk();
+                    } else {
+                        Uri packageURI = Uri.parse("package:" + getPackageName());
+                        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
+                        startActivityForResult(intent, GET_UNKNOWN_APP_SOURCES);
+                    }
+                    break;
 
+            }
         }
     }
 
