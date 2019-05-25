@@ -45,7 +45,7 @@ public class RequestInstallPermissionActivity extends AppCompatActivity {
         if (apkUri == null && TextUtils.isEmpty(apkPath)) {
             throw new RuntimeException("apkUri is null && apkPath is Empty");
         }
-        authority = getPackageName() + ".fileProvider";
+        authority = getPackageName() + ".fileProvider-installApk";
         checkInstallPermission(this);
     }
 

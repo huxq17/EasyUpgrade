@@ -14,7 +14,7 @@ buildscript {
        }
    }
     dependencies {
-        classpath 'com.buyi.huxq17:agencyplugin:1.1.2'
+        classpath 'com.buyi.huxq17:agencyplugin:1.1.3'
     }
 }
 ```
@@ -24,8 +24,8 @@ App模块的build.gradle：
 apply plugin: 'service_agency'
 
 dependencies {
-    implementation'com.huxq17.easyupgrade:easyupgrade:1.0.2'
-    implementation'com.huxq17.pump:download:1.0.9'
+    implementation'com.huxq17.easyupgrade:easyupgrade:1.0.3'
+    implementation'com.huxq17.pump:download:1.1.0'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
 }
 
@@ -66,7 +66,7 @@ if (Build.VERSION.SDK_INT >= 24) {
 
 ### License
 
-    Copyright (C) 2018 huxq17
+    Copyright (C) 2019 huxq17
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
